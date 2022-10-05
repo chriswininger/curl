@@ -29,10 +29,17 @@ def finalize(args, info):
     codedir = args[1]
     langauage = info['language']
 
+    standard_options = "standard_options"
+
+    # We exclude pulse and quandry from c/c++ projects because of https://issues.sonatype.org/browse/LIFT-4655
+    c_options = "c_options"
+
+    to_execute =  c_options if language == "c" else standard_options
+
     outputs = {
         'toolNotes': [{
             'type': 'using-crufty-language',
-            'message': '"{}" is crufty have you heard of Rust'.format(langauage),
+            'message': '"{}" is crufty have you heard of Rust -- {}'.format(langauage, to_execute),
             'file': os.path.join(codedir, 'src/main/java/com/mycompany/app/App.java'),
             'line': 1,
             'column': 0
